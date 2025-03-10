@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using EventEase.Models;
+
+namespace EventEase.Data
+{
+    public class EventEaseContext : DbContext
+    {
+        public EventEaseContext (DbContextOptions<EventEaseContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<EventEase.Models.Venue> Venue { get; set; } = default!;
+    }
+}
