@@ -1,0 +1,16 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+*.ide
+*.pdb
+*.obj
+*.tlog
+*.ipch
+*.db
+
+# Build outputs
+bin/
+obj/
