@@ -14,6 +14,10 @@ namespace EventEase.Data
         {
         }
 
-        public DbSet<EventEase.Models.Venue> Venue { get; set; } = default!;
+       public DbSet<EventEase.Models.Venue> Venue { get; set; } = default!;
+        public DbSet<EventEase.Models.Event> Event { get; set; } = default!;
+
     }
+
 }
+

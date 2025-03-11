@@ -2,7 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using EventEase.Data;
 using EventEase.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure the DbContext to use SQL Server
 builder.Services.AddDbContext<EventEaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("EventEaseContext") ?? throw new InvalidOperationException("Connection string 'EventEaseContext' not found.")));
 
@@ -11,11 +14,11 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+// Seed the database with data (Venues and Events)
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
-    SeedData.Initialize(services);
+    SeedData.Initialize(services);  // Call the SeedData method
 }
 
 // Configure the HTTP request pipeline.
@@ -31,12 +34,12 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// Map static assets (CSS, JS, etc.)
 app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

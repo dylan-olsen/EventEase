@@ -1,26 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EventEase.Data;
+using EventEase.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using EventEase.Data;
 using System;
 using System.Linq;
 
-namespace EventEase.Models;
-
-public static class SeedData
+namespace EventEase.Models
 {
-    public static void Initialize(IServiceProvider serviceProvider)
+    public static class SeedData
     {
-        using (var context = new EventEaseContext(
-            serviceProvider.GetRequiredService<
-                DbContextOptions<EventEaseContext>>()))
+        public static void Initialize(IServiceProvider serviceProvider)
         {
-            // Look for any venues.
-            if (context.Venue.Any())
+            using (var context = new EventEaseContext(
+                serviceProvider.GetRequiredService<
+                    DbContextOptions<EventEaseContext>>()))
             {
-                return;   // DB has been seeded
-            }
-
-            context.Venue.AddRange(
+                // Check if the database is already seeded with venues.
+                if (!context.Venue.Any())
+                {
+                    // DB has not been seeded
+                    context.Venue.AddRange(
                 new Venue
                 {
                     VenueName = "Grand Ballroom",
@@ -50,8 +49,56 @@ public static class SeedData
                     ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu-EqRkr-rYb_IsZJV5X6BTt8Tg_X8d6Uqzg&s"
                 }
             );
+                }
 
-            context.SaveChanges();
+                if (!context.Event.Any())
+                {
+                    context.Event.AddRange(
+                       new Event
+                       {
+                           EventName = "Summer Concert",
+                           EventDate = new DateTime(2025, 6, 15),
+                           Description = "An unforgettable evening of live music at the Grand Ballroom.",
+                           VenueId = context.Venue.First(v => v.VenueName == "Grand Ballroom").VenueId // Link to Grand Ballroom
+                       },
+                       new Event
+                       {
+                           EventName = "Beachside Music Festival",
+                           EventDate = new DateTime(2025, 7, 20),
+                           Description = "Join us for a weekend of music and fun at Oceanview Terrace.",
+                           VenueId = context.Venue.First(v => v.VenueName == "Oceanview Terrace").VenueId // Link to Oceanview Terrace
+                       },
+                       new Event
+                       {
+                           EventName = "Mountain Adventure Hike",
+                           EventDate = new DateTime(2025, 5, 10),
+                           Description = "Experience the beauty of the mountains with a guided hike.",
+                           VenueId = context.Venue.First(v => v.VenueName == "Mountain Lodge").VenueId // Link to Mountain Lodge
+                       },
+                       new Event
+                       {
+                           EventName = "City Park Annual Picnic",
+                           EventDate = new DateTime(2025, 8, 5),
+                           Description = "A fun-filled day with food, games, and live entertainment at City Park Pavilion.",
+                           VenueId = context.Venue.First(v => v.VenueName == "City Park Pavilion").VenueId // Link to City Park Pavilion
+                       }
+                   );
+
+
+                }
+
+                // Seed data for Venues.
+
+
+                // Save venues to the database first.
+                //context.SaveChanges();
+
+                // Now that the venues are saved, we can add events, linking them to the venues by their IDs.
+
+                // Save events to the database.
+                context.SaveChanges();
+            }
         }
     }
 }
+

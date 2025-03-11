@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using EventEase.Models;
 
 namespace EventEase.Models
 {
@@ -16,6 +17,8 @@ namespace EventEase.Models
         [Display(Name = "Image Link")]
         [DataType(DataType.Date)]
         public string ImageUrl { get; set; }
+
+        public ICollection<Event> Events { get; set; } // Navigation property
 
     }
 }
