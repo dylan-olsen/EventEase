@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EventEase.Data;
 using EventEase.Models;
@@ -16,32 +14,26 @@ namespace EventEase.Controllers
 
         public EventsController(EventEaseContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            var eventEaseContext = _context.Event.Include(e => e.Venue);
-            return View(await eventEaseContext.ToListAsync());
+            return View(await _context.Event.ToListAsync());
         }
 
         // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var eventEntity = await _context.Event
-                .Include(e => e.Venue)
                 .FirstOrDefaultAsync(m => m.EventId == id);
 
             if (eventEntity == null)
-            {
                 return NotFound();
-            }
 
             return View(eventEntity);
         }
@@ -49,14 +41,13 @@ namespace EventEase.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
-            ViewData["VenueId"] = new SelectList(_context.Venue, "VenueId", "VenueName");
             return View();
         }
 
         // POST: Events/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EventId,EventName,EventDate,Description,VenueId")] Event eventEntity)
+        public async Task<IActionResult> Create([Bind("EventId,EventName,EventDate,Description")] Event eventEntity)
         {
             if (ModelState.IsValid)
             {
@@ -64,8 +55,6 @@ namespace EventEase.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["VenueId"] = new SelectList(_context.Venue, "VenueId", "VenueName", eventEntity.VenueId);
             return View(eventEntity);
         }
 
@@ -73,29 +62,22 @@ namespace EventEase.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var eventEntity = await _context.Event.FindAsync(id);
             if (eventEntity == null)
-            {
                 return NotFound();
-            }
 
-            ViewData["VenueId"] = new SelectList(_context.Venue, "VenueId", "VenueName", eventEntity.VenueId);
             return View(eventEntity);
         }
 
         // POST: Events/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EventId,EventName,EventDate,Description,VenueId")] Event eventEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("EventId,EventName,EventDate,Description")] Event eventEntity)
         {
             if (id != eventEntity.EventId)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -107,19 +89,12 @@ namespace EventEase.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!EventExists(eventEntity.EventId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
-
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["VenueId"] = new SelectList(_context.Venue, "VenueId", "VenueName", eventEntity.VenueId);
             return View(eventEntity);
         }
 
@@ -127,18 +102,13 @@ namespace EventEase.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var eventEntity = await _context.Event
-                .Include(e => e.Venue)
                 .FirstOrDefaultAsync(m => m.EventId == id);
 
             if (eventEntity == null)
-            {
                 return NotFound();
-            }
 
             return View(eventEntity);
         }
@@ -154,7 +124,6 @@ namespace EventEase.Controllers
                 _context.Event.Remove(eventEntity);
                 await _context.SaveChangesAsync();
             }
-
             return RedirectToAction(nameof(Index));
         }
 
@@ -164,4 +133,3 @@ namespace EventEase.Controllers
         }
     }
 }
-

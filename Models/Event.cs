@@ -10,8 +10,9 @@ namespace EventEase.Models
         public string EventName { get; set; }
         public DateTime EventDate { get; set; }
         public string Description { get; set; }
-        public int VenueId { get; set; }
-        public Venue Venue { get; set; } // Navigation property
+
+        // connection to bookings table 
+        public ICollection<Booking> Bookings { get; set; } // Navigation property for Bookings
     }
 
 

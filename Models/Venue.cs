@@ -18,7 +18,7 @@ namespace EventEase.Models
         [DataType(DataType.Date)]
         public string ImageUrl { get; set; }
 
-        public ICollection<Event> Events { get; set; } // Navigation property
-
+        // connection to hte booking table 
+        public ICollection<Booking> Bookings { get; set; } // Navigation property for Bookings
     }
 }
