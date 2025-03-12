@@ -2,7 +2,50 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Hero Section -->
+<div class="jumbotron text-white text-center" style="background: linear-gradient(to right, #6a11cb, #2575fc); padding: 3rem;">
+    <h1 class="display-3">Welcome to EventEase</h1>
+    <p class="lead">Your one-stop solution for managing venues, events, and bookings seamlessly.</p>
+    <a class="btn btn-primary btn-lg" asp-action="Index" asp-controller="Venue">View Venues</a>
+    <a class="btn btn-secondary btn-lg" asp-action="Index" asp-controller="Event">Explore Events</a>
 </div>
+
+<!-- Features Section -->
+<div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Effortless Booking</h5>
+                    <p class="card-text">Easily book venues and manage schedules with just a few clicks.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Event Management</h5>
+                    <p class="card-text">Organize events with powerful tools and real-time updates.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Streamlined Experience</h5>
+                    <p class="card-text">Enjoy a clean and user-friendly interface for all your needs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Section -->
+<footer class="text-center mt-5 py-4" style="background-color: #f8f9fa;">
+    <p>&copy; 2025 EventEase. All rights reserved.</p>
+    <p>
+        <a href="https://learn.microsoft.com/aspnet/core" class="text-primary">Learn ASP.NET Core</a> |
+        <a href="/Contact" class="text-primary">Contact Us</a>
+    </p>
+</footer>
+

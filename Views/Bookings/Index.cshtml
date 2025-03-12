@@ -1,47 +1,33 @@
 ﻿@model IEnumerable<EventEase.Models.Booking>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bookings";
 }
 
-<h1>Index</h1>
+<h1 class="text-center mb-4">Bookings</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary mb-3" asp-action="Create">Create New Booking</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BookingDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Event)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Venue)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookingDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Event.EventId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Venue.VenueId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BookingId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BookingId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BookingId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Venue.VenueName</h5>
+                    <p class="card-text">
+                        <strong>Booking Date:</strong> @item.BookingDate.ToString("dd MMM yyyy")<br />
+                        <strong>Event:</strong> @item.Event.EventName
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.BookingId">Edit</a>
+                        <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.BookingId">Details</a>
+                        <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.BookingId">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
